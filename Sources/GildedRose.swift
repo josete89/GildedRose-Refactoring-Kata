@@ -21,35 +21,46 @@ public class GildedRose {
         return name != "Sulfuras, Hand of Ragnaros"
     }
     
+    private func increase(_ quality:Int) -> Int {
+        return quality + 1
+    }
+    
+    private func deacrese(_ quality:Int) -> Int {
+        return quality - 1
+    }
+    
+    private func thereIsNoCuality(_ quality:Int,name:String) -> Int{
+        if (quality > 0) {
+            if (notSulfuras(name)) {
+                return deacrese(quality)
+            }
+        }
+        return quality
+    }
+    
     public func updateQuality() {
         
         let updatedItems = self.items.map({ item -> Item in
-            let newItem = item
             
             let name = item.name
             var quality = item.quality
             var sellIn = item.sellIn
             
             if(notAgedBrie(name) && notBackstage(name)){
-                if (quality > 0) {
-                    if (notSulfuras(name)) {
-                        quality = quality - 1
-                    }
-                }
+                quality = thereIsNoCuality(quality, name: name)
+                
             }else{
                 if (quality < qualityTreshold) {
-                    quality = quality + 1
-                    
+                    quality =  increase(quality)
                     if (name == "Backstage passes to a TAFKAL80ETC concert") {
                         if (sellIn < 11) {
                             if (quality < qualityTreshold) {
-                                quality = quality + 1
+                                quality = increase(quality)
                             }
                         }
-                        
                         if (sellIn < 6) {
                             if (quality < qualityTreshold) {
-                                quality = quality + 1
+                                quality = increase(quality)
                             }
                         }
                     }
@@ -63,30 +74,22 @@ public class GildedRose {
             if (sellIn < 0) {
                 if (notAgedBrie(name)) {
                     if (notBackstage(name)) {
-                        if (quality > 0) {
-                            if (notSulfuras(name)) {
-                                quality = quality - 1
-                            }
-                        }
+                        quality = thereIsNoCuality(quality, name: name)
                     } else {
                         quality = 0
                     }
                 } else {
                     if (quality < qualityTreshold) {
-                        quality = quality + 1
+                        quality = increase(quality)
                     }
                 }
             }
             
-            //print(" actual -> \(newItem)")
-            //print(" new -> \(Item(name: newItem.name, sellIn: newItem.sellIn, quality: newItem.quality))")
-            //return Item(name: newItem.name, sellIn: newItem.sellIn, quality: newItem.quality)
+            item.name = name
+            item.sellIn = sellIn
+            item.quality = quality
             
-            newItem.name = name
-            newItem.sellIn = sellIn
-            newItem.quality = quality
-            
-            return newItem
+            return item
         })
         
         self.items = updatedItems
