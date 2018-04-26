@@ -42,6 +42,8 @@ public class GildedRose {
         return quality
     }
     
+    
+    
     public func updateQuality() {
         
         let updatedItems = self.items.map({ item -> Item in
@@ -77,17 +79,20 @@ public class GildedRose {
             }
             
             if (sellIn < 0) {
-                if (notAgedBrie(name)) {
-                    if (notBackstage(name)) {
-                        quality = thereIsNoQuality(quality, name: name)
-                    } else {
-                        quality = 0
-                    }
-                } else {
+                
+                if(notAgedBrie(name) && notBackstage(name)) {
+                    quality = thereIsNoQuality(quality, name: name)
+                    
+                }
+                if (!notAgedBrie(name)){
                     if (quality < qualityTreshold) {
                         quality = increase(quality)
                     }
                 }
+                if (isBackstage(name)){
+                    quality = 0
+                }
+
             }
             
             item.name = name
