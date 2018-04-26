@@ -17,6 +17,10 @@ public class GildedRose {
         return name != "Backstage passes to a TAFKAL80ETC concert"
     }
     
+    private func isBackstage(_ name:String) -> Bool{
+        return name == "Backstage passes to a TAFKAL80ETC concert"
+    }
+    
     private func notSulfuras(_ name:String) -> Bool{
         return name != "Sulfuras, Hand of Ragnaros"
     }
@@ -29,7 +33,7 @@ public class GildedRose {
         return quality - 1
     }
     
-    private func thereIsNoCuality(_ quality:Int,name:String) -> Int{
+    private func thereIsNoQuality(_ quality:Int,name:String) -> Int{
         if (quality > 0) {
             if (notSulfuras(name)) {
                 return deacrese(quality)
@@ -45,14 +49,15 @@ public class GildedRose {
             let name = item.name
             var quality = item.quality
             var sellIn = item.sellIn
+        
             
             if(notAgedBrie(name) && notBackstage(name)){
-                quality = thereIsNoCuality(quality, name: name)
-                
+                quality = thereIsNoQuality(quality, name: name)
             }else{
+                
                 if (quality < qualityTreshold) {
                     quality =  increase(quality)
-                    if (name == "Backstage passes to a TAFKAL80ETC concert") {
+                    if (isBackstage(name)) {
                         if (sellIn < 11) {
                             if (quality < qualityTreshold) {
                                 quality = increase(quality)
@@ -74,7 +79,7 @@ public class GildedRose {
             if (sellIn < 0) {
                 if (notAgedBrie(name)) {
                     if (notBackstage(name)) {
-                        quality = thereIsNoCuality(quality, name: name)
+                        quality = thereIsNoQuality(quality, name: name)
                     } else {
                         quality = 0
                     }
