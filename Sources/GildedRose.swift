@@ -25,8 +25,11 @@ public class GildedRose {
         return name != "Sulfuras, Hand of Ragnaros"
     }
     
-    private func increase(_ quality:Int) -> Int {
-        return quality + 1
+    private func increaseQuality(_ quality:Int) -> Int {
+        if (quality < qualityTreshold) {
+            return quality + 1
+        }
+        return quality
     }
     
     private func deacrese(_ quality:Int) -> Int {
@@ -56,19 +59,14 @@ public class GildedRose {
             if(notAgedBrie(name) && notBackstage(name)){
                 quality = thereIsNoQuality(quality, name: name)
             }else{
-                
                 if (quality < qualityTreshold) {
-                    quality =  increase(quality)
+                    quality =  quality + 1
                     if (isBackstage(name)) {
                         if (sellIn < 11) {
-                            if (quality < qualityTreshold) {
-                                quality = increase(quality)
-                            }
+                            quality = increaseQuality(quality)
                         }
                         if (sellIn < 6) {
-                            if (quality < qualityTreshold) {
-                                quality = increase(quality)
-                            }
+                            quality = increaseQuality(quality)
                         }
                     }
                 }
@@ -85,9 +83,7 @@ public class GildedRose {
                     
                 }
                 if (!notAgedBrie(name)){
-                    if (quality < qualityTreshold) {
-                        quality = increase(quality)
-                    }
+                    quality = increaseQuality(quality)
                 }
                 if (isBackstage(name)){
                     quality = 0
