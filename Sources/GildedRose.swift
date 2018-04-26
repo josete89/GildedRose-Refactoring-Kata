@@ -16,7 +16,10 @@ public class GildedRose {
     private func notBackstage(_ name:String) -> Bool{
         return name != "Backstage passes to a TAFKAL80ETC concert"
     }
-
+    
+    private func notSulfuras(_ name:String) -> Bool{
+        return name != "Sulfuras, Hand of Ragnaros"
+    }
     
     public func updateQuality() {
         
@@ -29,7 +32,7 @@ public class GildedRose {
             
             if(notAgedBrie(name) && notBackstage(name)){
                 if (quality > 0) {
-                    if (name != "Sulfuras, Hand of Ragnaros") {
+                    if (notSulfuras(name)) {
                         quality = quality - 1
                     }
                 }
@@ -53,7 +56,7 @@ public class GildedRose {
                 }
             }
 
-            if (name != "Sulfuras, Hand of Ragnaros") {
+            if (notSulfuras(name)) {
                 sellIn = sellIn - 1
             }
             
@@ -61,12 +64,12 @@ public class GildedRose {
                 if (notAgedBrie(name)) {
                     if (notBackstage(name)) {
                         if (quality > 0) {
-                            if (name != "Sulfuras, Hand of Ragnaros") {
+                            if (notSulfuras(name)) {
                                 quality = quality - 1
                             }
                         }
                     } else {
-                        quality = quality - quality
+                        quality = 0
                     }
                 } else {
                     if (quality < qualityTreshold) {
@@ -83,7 +86,7 @@ public class GildedRose {
             newItem.sellIn = sellIn
             newItem.quality = quality
             
-            return item
+            return newItem
         })
         
         self.items = updatedItems
