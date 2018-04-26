@@ -36,7 +36,7 @@ public class GildedRose {
         return quality - 1
     }
     
-    private func thereIsNoQuality(_ quality:Int,name:String) -> Int{
+    private func decreaseQuality(_ quality:Int,name:String) -> Int{
         if (quality > 0) {
             if (notSulfuras(name)) {
                 return deacrese(quality)
@@ -55,9 +55,8 @@ public class GildedRose {
             var quality = item.quality
             var sellIn = item.sellIn
         
-            
             if(notAgedBrie(name) && notBackstage(name)){
-                quality = thereIsNoQuality(quality, name: name)
+                quality = decreaseQuality(quality, name: name)
             }else{
                 if (quality < qualityTreshold) {
                     quality =  quality + 1
@@ -77,10 +76,9 @@ public class GildedRose {
             }
             
             if (sellIn < 0) {
-                
+    
                 if(notAgedBrie(name) && notBackstage(name)) {
-                    quality = thereIsNoQuality(quality, name: name)
-                    
+                    quality = decreaseQuality(quality, name: name)
                 }
                 if (!notAgedBrie(name)){
                     quality = increaseQuality(quality)
