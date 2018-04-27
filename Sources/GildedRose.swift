@@ -10,7 +10,6 @@ public class GildedRose {
     var items:[Item]
 
     let qualityTreshold = 50
-    let sellTreshold = 11
     
     required public init(items:[Item]) {
         self.items = items
