@@ -16,10 +16,24 @@ public class GildedRose {
         self.items = items
     }
 
+    public func updateQuality() {
+        
+        let updatedItems = self.items.map({ item -> Item in
+            let pipeLine = firstStep >>> secondStep >>> thirdStep
+            return pipeLine(item)
+        })
+        
+        self.items = updatedItems
+        
+    }
+}
+
+extension GildedRose {
+    
     private func notAgedBrie(_ name:String) -> Bool {
         return name != "Aged Brie"
     }
-
+    
     private func notBackstage(_ name:String) -> Bool{
         return name != "Backstage passes to a TAFKAL80ETC concert"
     }
@@ -52,7 +66,7 @@ public class GildedRose {
         return quality
     }
     
-    private func firstStep(_ item:Item) -> Item {
+    fileprivate func firstStep(_ item:Item) -> Item {
         let name = item.name
         var quality = item.quality
         let sellIn = item.sellIn
@@ -76,7 +90,7 @@ public class GildedRose {
         return item
     }
     
-    private func secondStep(_ item:Item) -> Item {
+    fileprivate func secondStep(_ item:Item) -> Item {
         var sellIn = item.sellIn
         let name = item.name
         
@@ -89,7 +103,7 @@ public class GildedRose {
         return item
     }
     
-    private func thirdStep(_ item:Item) -> Item {
+    fileprivate func thirdStep(_ item:Item) -> Item {
         
         let name = item.name
         var quality = item.quality
@@ -112,18 +126,6 @@ public class GildedRose {
         item.quality = quality
         
         return item
-    }
-    
-    
-    public func updateQuality() {
-        
-        let updatedItems = self.items.map({ item -> Item in
-            let pipeLine = firstStep >>> secondStep >>> thirdStep
-            return pipeLine(item)
-        })
-        
-        self.items = updatedItems
-        
     }
 }
 
