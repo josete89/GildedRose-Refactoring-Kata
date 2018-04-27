@@ -1,3 +1,10 @@
+precedencegroup Group { associativity: left }
+infix operator >>>: Group
+public func >>><A,B,C>(f:@escaping(A)->(B),g:@escaping(B)->(C)) -> (A) -> (C){
+    return { x in
+        return g(f(x))
+    }
+}
 
 public class GildedRose {
     var items:[Item]
@@ -82,43 +89,41 @@ public class GildedRose {
         return item
     }
     
+    private func thirdStep(_ item:Item) -> Item {
+        
+        let name = item.name
+        var quality = item.quality
+        let sellIn = item.sellIn
+        
+        if (sellIn < 0) {
+            
+            if(notAgedBrie(name) && notBackstage(name)) {
+                quality = decreaseQuality(quality, name: name)
+            }
+            if (!notAgedBrie(name)){
+                quality = increaseQuality(quality)
+            }
+            if (isBackstage(name)){
+                quality = 0
+            }
+            
+        }
+        
+        item.quality = quality
+        
+        return item
+    }
+    
     
     public func updateQuality() {
         
         let updatedItems = self.items.map({ item -> Item in
-            
-            
-            firstStep(item)
-            
-            secondStep(item)
-            
-            let name = item.name
-            var quality = item.quality
-            var sellIn = item.sellIn
-
-            
-            if (sellIn < 0) {
-    
-                if(notAgedBrie(name) && notBackstage(name)) {
-                    quality = decreaseQuality(quality, name: name)
-                }
-                if (!notAgedBrie(name)){
-                    quality = increaseQuality(quality)
-                }
-                if (isBackstage(name)){
-                    quality = 0
-                }
-
-            }
-            
-            item.name = name
-            item.sellIn = sellIn
-            item.quality = quality
-            
-            return item
+            let pipeLine = firstStep >>> secondStep >>> thirdStep
+            return pipeLine(item)
         })
         
         self.items = updatedItems
         
     }
 }
+
