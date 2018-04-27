@@ -48,7 +48,7 @@ public class GildedRose {
     private func firstStep(_ item:Item) -> Item {
         let name = item.name
         var quality = item.quality
-        var sellIn = item.sellIn
+        let sellIn = item.sellIn
         
         if(notAgedBrie(name) && notBackstage(name)){
             quality = decreaseQuality(quality, name: name)
@@ -64,13 +64,23 @@ public class GildedRose {
             }
         }
         
-        item.name = name
-        item.sellIn = sellIn
         item.quality = quality
         
         return item
     }
     
+    private func secondStep(_ item:Item) -> Item {
+        var sellIn = item.sellIn
+        let name = item.name
+        
+        if (notSulfuras(name)) {
+            sellIn = sellIn - 1
+        }
+        
+        item.sellIn = sellIn
+        
+        return item
+    }
     
     
     public func updateQuality() {
@@ -80,15 +90,12 @@ public class GildedRose {
             
             firstStep(item)
             
+            secondStep(item)
+            
             let name = item.name
             var quality = item.quality
             var sellIn = item.sellIn
-        
-            
 
-            if (notSulfuras(name)) {
-                sellIn = sellIn - 1
-            }
             
             if (sellIn < 0) {
     
