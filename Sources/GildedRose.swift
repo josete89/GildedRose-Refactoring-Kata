@@ -45,31 +45,46 @@ public class GildedRose {
         return quality
     }
     
+    private func firstStep(_ item:Item) -> Item {
+        let name = item.name
+        var quality = item.quality
+        var sellIn = item.sellIn
+        
+        if(notAgedBrie(name) && notBackstage(name)){
+            quality = decreaseQuality(quality, name: name)
+        }else{
+            quality = increaseQuality(quality)
+            if (quality < qualityTreshold && isBackstage(name)) {
+                if (sellIn < 11) {
+                    quality = increaseQuality(quality)
+                }
+                if (sellIn < 6) {
+                    quality = increaseQuality(quality)
+                }
+            }
+        }
+        
+        item.name = name
+        item.sellIn = sellIn
+        item.quality = quality
+        
+        return item
+    }
+    
     
     
     public func updateQuality() {
         
         let updatedItems = self.items.map({ item -> Item in
             
+            
+            firstStep(item)
+            
             let name = item.name
             var quality = item.quality
             var sellIn = item.sellIn
         
-            if(notAgedBrie(name) && notBackstage(name)){
-                quality = decreaseQuality(quality, name: name)
-            }else{
-                if (quality < qualityTreshold) {
-                    quality =  quality + 1
-                    if (isBackstage(name)) {
-                        if (sellIn < 11) {
-                            quality = increaseQuality(quality)
-                        }
-                        if (sellIn < 6) {
-                            quality = increaseQuality(quality)
-                        }
-                    }
-                }
-            }
+            
 
             if (notSulfuras(name)) {
                 sellIn = sellIn - 1
