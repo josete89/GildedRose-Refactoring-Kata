@@ -17,10 +17,8 @@ public class GildedRose {
 
     public func updateQuality() {
         
-        let updatedItems = self.items.map({ item -> Item in
-            let pipeLine = firstStep >>> secondStep >>> thirdStep
-            return pipeLine(item)
-        })
+        let pipeLine = firstStep >>> secondStep >>> thirdStep
+        let updatedItems = self.items.map(pipeLine)
         
         self.items = updatedItems
         
